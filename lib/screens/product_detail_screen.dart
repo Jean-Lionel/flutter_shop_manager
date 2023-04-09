@@ -6,9 +6,11 @@ class ProductDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final String productId =
+        ModalRoute.of(context)?.settings.arguments as String;
     return Scaffold(
       appBar: AppBar(
-        title: Text('Hello'),
+        title: Text('Hello $productId'),
       ),
       body: Text("Good"),
     );
