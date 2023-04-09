@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
-import 'package:flutter_shop_manager/models/product.dart';
-import 'package:flutter_shop_manager/providers/product.dart';
+import '../providers/product.dart';
+import '../providers/products.dart';
 import 'package:provider/provider.dart';
 
 class ProductDetailScreen extends StatelessWidget {

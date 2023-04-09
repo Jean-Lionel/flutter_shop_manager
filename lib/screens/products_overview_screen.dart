@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_shop_manager/widgets/product_item.dart';
-import '../models/product.dart';
+import '../widgets/product_item.dart';
 import '../widgets/grid_view_widget.dart';
 
 class ProductVeiwScreen extends StatelessWidget {
-  List<Product> loadProducts = [];
- 
 
   @override
   Widget build(BuildContext context) {

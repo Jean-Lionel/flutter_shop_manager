@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import './providers/product.dart';
+import './providers/products.dart';
 import 'package:provider/provider.dart';
 import './screens/product_detail_screen.dart';
 import './screens/products_overview_screen.dart';
