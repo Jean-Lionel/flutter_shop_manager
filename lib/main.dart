@@ -14,6 +14,8 @@ class MyApp extends StatelessWidget {
       title: "My SHop",
       theme: ThemeData(
         primaryColor: Colors.purple,
+        secondaryHeaderColor: Colors.orange,
+        fontFamily: "Lato",
       ),
        home: Scaffold(
         appBar: AppBar(
