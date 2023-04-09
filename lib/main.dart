@@ -12,8 +12,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: "My SHop",
+      theme: ThemeData(
+        primaryColor: Colors.purple,
+      ),
        home: Scaffold(
-        appBar: AppBar(title: Text("My Shop"),
+        appBar: AppBar(
+          backgroundColor: Colors.purple,
+          title: Text("My Shop"),
         ),
         body: ProductVeiwScreen(),
        ),
