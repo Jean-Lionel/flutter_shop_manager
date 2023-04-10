@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_shop_manager/screens/carte_screen.dart';
 import '../providers/cart.dart';
 import 'package:provider/provider.dart';
 import '../widgets/product_item.dart';
@@ -44,12 +45,13 @@ class _ProductVeiwScreenState extends State<ProductVeiwScreen> {
                       child: Text("Only Favorite"),
                     ),
                   ]),
-        
           Consumer<Cart>(
             builder: (_, cart, ch) => BadgeWidget(
               value: cart.countItem.toString(),
               child: IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).pushNamed(CartScreen.routeName);
+                },
                 icon: Icon(Icons.shopping_cart),
               ),
             ),
