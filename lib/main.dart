@@ -23,15 +23,13 @@ class MyApp extends StatelessWidget {
           fontFamily: "Lato",
         ),
         home: Scaffold(
-          appBar: AppBar(
-            backgroundColor: Colors.purple,
-            title: Text("My Shop"),
-          ),
+          
           body: ProductVeiwScreen(),
         ),
         routes: {
           ProductDetailScreen.routeName: (_) => ProductDetailScreen(),
         },
+        debugShowCheckedModeBanner: false,
       ),
     );
   }
