@@ -7,7 +7,13 @@ enum FilterProduct {
   Favorites,
 }
 
-class ProductVeiwScreen extends StatelessWidget {
+class ProductVeiwScreen extends StatefulWidget {
+  @override
+  State<ProductVeiwScreen> createState() => _ProductVeiwScreenState();
+}
+
+class _ProductVeiwScreenState extends State<ProductVeiwScreen> {
+  bool _showFav = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,6 +22,15 @@ class ProductVeiwScreen extends StatelessWidget {
         title: const Text("My Shop"),
         actions: [
           PopupMenuButton(
+              onSelected: (FilterProduct f) {
+                setState(() {
+                  if (f == FilterProduct.All) {
+                    _showFav = false;
+                  } else {
+                    _showFav = true;
+                  }
+                });
+              },
               itemBuilder: (_) => [
                     const PopupMenuItem(
                       value: FilterProduct.All,
@@ -30,7 +45,7 @@ class ProductVeiwScreen extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: GridViewWigdet(),
+        child: GridViewWigdet(_showFav),
       ),
     );
   }
