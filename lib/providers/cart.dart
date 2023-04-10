@@ -21,8 +21,21 @@ class Cart with ChangeNotifier {
     return {..._items};
   }
 
+  int get countItem {
+    return _items.length;
+  }
+
   void addItems(productId, title, price) {
     if (_items.containsKey(productId)) {
+      _items.update(
+        productId,
+        (existingItem) => CartItem(
+          id: existingItem.id,
+          title: existingItem.title,
+          price: existingItem.price,
+          quantity: (existingItem.quantity + 1),
+        ),
+      );
     } else {
       _items.putIfAbsent(
         productId,
@@ -33,6 +46,8 @@ class Cart with ChangeNotifier {
           quantity: 1,
         ),
       );
+
+      notifyListeners();
     }
   }
 }
