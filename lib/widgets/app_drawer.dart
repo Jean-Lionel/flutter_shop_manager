@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../screens/order_screen.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({super.key});
@@ -9,10 +10,25 @@ class AppDrawer extends StatelessWidget {
       child: ListView(
         children: [
           AppBar(
-            title: Text("Hello "),
+            title: const Text('Hello world'),
+            automaticallyImplyLeading: false,
+            backgroundColor: Theme.of(context).primaryColor,
           ),
+          const Divider(),
           ListTile(
-            trailing: Text("Hello world"),
+            leading: const Text("Shop"),
+            title: const Icon(Icons.shop),
+            onTap: () {
+              Navigator.of(context).pushReplacementNamed("/");
+            },
+          ),
+          const Divider(),
+          ListTile(
+            leading: const Text("Orders"),
+            title: const Icon(Icons.payment),
+            onTap: () {
+              Navigator.of(context).pushReplacementNamed(OrderScreen.routeName);
+            },
           )
         ],
       ),
