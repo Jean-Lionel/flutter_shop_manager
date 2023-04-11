@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_shop_manager/screens/carte_screen.dart';
+import 'package:flutter_shop_manager/widgets/app_drawer.dart';
 import '../providers/cart.dart';
 import 'package:provider/provider.dart';
 import '../widgets/product_item.dart';
@@ -21,6 +22,7 @@ class _ProductVeiwScreenState extends State<ProductVeiwScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: AppDrawer(),
       appBar: AppBar(
         backgroundColor: Colors.purple,
         title: const Text("My Shop"),
