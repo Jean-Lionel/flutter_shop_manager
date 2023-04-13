@@ -20,7 +20,8 @@ class _OrderItemWidgetState extends State<OrderItemWidget> {
       child: Column(
         children: [
           ListTile(
-            title: Text("Total : ${widget.orderItem.amount} BIF"),
+            title: Text(
+                "Total : ${widget.orderItem.amount.toStringAsFixed(2)} BIF"),
             subtitle: Text(
               DateFormat(" dd/MM/yyyy à hh:mm")
                   .format(widget.orderItem.dateTime),
@@ -52,11 +53,17 @@ class _OrderItemWidgetState extends State<OrderItemWidget> {
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                              Text("${e.quantity} x ${e.price} BIF",
-                                  style: const TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                  )),
+                              const Spacer(),
+                              Text(
+                                "${e.quantity} x ${e.price} \$",
+                              ),
+                              Text(
+                                "= ${(e.quantity * e.price).toStringAsFixed(2)} \$",
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              )
                             ],
                           ),
                         ))
