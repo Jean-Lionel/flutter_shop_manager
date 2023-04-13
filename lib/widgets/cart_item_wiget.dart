@@ -23,6 +23,31 @@ class CartItemWidget extends StatelessWidget {
         ),
       ),
       direction: DismissDirection.endToStart,
+      confirmDismiss: (direction) {
+        return showDialog(
+            context: context,
+            builder: (ctxt) => AlertDialog(
+                  title: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: const [
+                        Icon(Icons.warning),
+                        Text("Are you sure ? "),
+                      ]),
+                  content: Text("Do you want to delete"),
+                  actions: [
+                    ElevatedButton(
+                        onPressed: () {
+                          Navigator.of(ctxt).pop(false);
+                        },
+                        child: Text("No")),
+                    ElevatedButton(
+                        onPressed: () {
+                          Navigator.of(ctxt).pop(true);
+                        },
+                        child: Text("Yes")),
+                  ],
+                ));
+      },
       child: Card(
         margin: EdgeInsets.all(5.0),
         child: ListTile(
