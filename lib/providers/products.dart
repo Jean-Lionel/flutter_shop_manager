@@ -40,12 +40,18 @@ class Products with ChangeNotifier {
   List<Product> get item {
     return [..._item];
   }
+
   List<Product> get favoritesProducts {
     return _item.where((p) => p.isFavorite).toList();
   }
 
   void addItem(v) {
     _item.add(v);
+    notifyListeners();
+  }
+
+  void removeItem(String productId) {
+    _item.removeWhere((p) => p.id == productId);
     notifyListeners();
   }
 
