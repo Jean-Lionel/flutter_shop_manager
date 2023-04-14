@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_shop_manager/providers/products.dart';
 import 'package:flutter_shop_manager/screens/carte_screen.dart';
 import 'package:flutter_shop_manager/widgets/app_drawer.dart';
 import '../providers/cart.dart';
@@ -19,6 +20,25 @@ class ProductVeiwScreen extends StatefulWidget {
 
 class _ProductVeiwScreenState extends State<ProductVeiwScreen> {
   bool _showFav = false;
+  var _isInit = true;
+
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    if (_isInit) {
+      Provider.of<Products>(context).getAddSyncData();
+    }
+    _isInit = false;
+    super.didChangeDependencies();
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
