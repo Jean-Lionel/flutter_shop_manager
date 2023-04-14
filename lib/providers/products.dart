@@ -57,6 +57,16 @@ class Products with ChangeNotifier {
     return _item.where((p) => p.isFavorite).toList();
   }
 
+  Future<void> getAddSyncData() async {
+    final url = Uri.https(
+        "flutter-first-1d441-default-rtdb.firebaseio.com", "products.json");
+    try {
+      final response = await http.get(url);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future<void> addItem(Product v) async {
     final url = Uri.https(
         "flutter-first-1d441-default-rtdb.firebaseio.com", "products.json");
@@ -78,9 +88,6 @@ class Products with ChangeNotifier {
       print("Error: ${e}");
       rethrow;
     }
-
-  
-   
   }
 
   Future<void> updateProduct(String productId, Product v) {
