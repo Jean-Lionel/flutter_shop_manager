@@ -14,7 +14,9 @@ class AddProductScreen extends StatefulWidget {
 class _AddProductScreenState extends State<AddProductScreen> {
   final _priceFocusNode = FocusNode();
   final _descriptionFocusNode = FocusNode();
-  final _imageUrlController = TextEditingController();
+  var _imageUrlController = TextEditingController();
+  String _product_id = "";
+  bool _isFavorite = false;
   String _title = "";
   String _description = "";
   String _imageUrl = "";
@@ -29,16 +31,43 @@ class _AddProductScreenState extends State<AddProductScreen> {
       return;
     }
     _formKey.currentState!.save();
+    if (_product_id.isEmpty) {
+      _product_id = DateTime.now().toString();
+    }
     product = Product(
-      id: DateTime.now().toString(),
+      id: _product_id,
       title: _title,
       price: _price,
       description: _description,
       imageUrl: _imageUrl,
+      isFavorite: _isFavorite,
     );
 
-    Provider.of<Products>(context, listen: false).addItem(product);
+    Provider.of<Products>(context, listen: false)
+        .updateProduct(_product_id, product);
     Navigator.of(context).pop();
+  }
+
+  var _isInitial = true;
+
+  @override
+  void didChangeDependencies() {
+    if (_isInitial) {
+      final productId = ModalRoute.of(context)?.settings.arguments;
+      if (productId != null) {
+        Product p =
+            Provider.of<Products>(context).findById(productId as String);
+        _product_id = p.id;
+        _title = p.title;
+        _description = p.description;
+        _price = p.price;
+        _isFavorite = p.isFavorite;
+        //_imageUrl = p.imageUrl;
+        _imageUrlController.text = p.imageUrl;
+      }
+    }
+    _isInitial = false;
+    super.didChangeDependencies();
   }
 
   @override
@@ -69,6 +98,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
           key: _formKey,
           child: ListView(children: [
             TextFormField(
+              initialValue: _title,
               decoration: InputDecoration(labelText: "Title"),
               textInputAction: TextInputAction.next,
               validator: (value) {
@@ -85,6 +115,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
               },
             ),
             TextFormField(
+              initialValue: _price.toString(),
               decoration: InputDecoration(labelText: "price"),
               keyboardType: TextInputType.number,
               focusNode: _priceFocusNode,
@@ -115,6 +146,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
               },
             ),
             TextFormField(
+              initialValue: _description,
               decoration: InputDecoration(labelText: "Description"),
               maxLines: 3,
               keyboardType: TextInputType.multiline,

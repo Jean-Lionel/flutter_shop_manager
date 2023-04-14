@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_shop_manager/providers/products.dart';
+import 'package:flutter_shop_manager/screens/add_product_screen.dart';
+import 'package:provider/provider.dart';
 import '../providers/product.dart';
 
 class UserProductItem extends StatelessWidget {
@@ -16,7 +19,12 @@ class UserProductItem extends StatelessWidget {
         width: 100,
         child: Row(children: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).pushNamed(
+                AddProductScreen.routeName,
+                arguments: product.id,
+              );
+            },
             icon: Icon(
               Icons.edit,
               color: Theme.of(context).primaryColor,
@@ -33,11 +41,17 @@ class UserProductItem extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.of(cxt).pop();
+                          },
                           child: Text('Non'),
                         ),
                         ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Provider.of<Products>(cxt, listen: false)
+                                .removeItem(product.id);
+                            Navigator.of(cxt).pop();
+                          },
                           child: Text('Ok'),
                           style: ButtonStyle(alignment: Alignment.center),
                         ),
