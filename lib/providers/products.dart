@@ -35,6 +35,14 @@ class Products with ChangeNotifier {
       imageUrl:
           'https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Cast-Iron-Pan.jpg/1024px-Cast-Iron-Pan.jpg',
     ),
+    Product(
+      id: 'p5',
+      title: 'KOSTUME',
+      description: 'Gura Costume man ',
+      price: 49.99,
+      imageUrl:
+          'https://fastly.picsum.photos/id/856/300/300.jpg?hmac=K6AeHs9gpB-QHPd5KecDYgrBll0Lq6Lh6nb_nsH2Cic',
+    ),
   ];
 
   List<Product> get item {
@@ -45,7 +53,7 @@ class Products with ChangeNotifier {
     return _item.where((p) => p.isFavorite).toList();
   }
 
-  void addItem(v) {
+  void addItem(Product v) {
     _item.add(v);
     notifyListeners();
   }
