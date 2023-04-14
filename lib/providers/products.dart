@@ -1,4 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+
 import './product.dart';
 
 class Products with ChangeNotifier {
@@ -53,12 +57,31 @@ class Products with ChangeNotifier {
     return _item.where((p) => p.isFavorite).toList();
   }
 
-  void addItem(Product v) {
-    _item.add(v);
-    notifyListeners();
+  Future<void> addItem(Product v) {
+    final url = Uri.https(
+        "flutter-first-1d441-default-rtdb.firebaseio.com", "products.json");
+
+    return http
+        .post(url,
+            body: json.encode({
+              'id': v.id,
+              'title': v.title,
+              'description': v.description,
+              'price': v.price,
+              'imageUrl': v.imageUrl,
+              'favorites': v.isFavorite
+            }))
+        .then((value) {
+      //Change the value of the id
+      v.id = json.decode(value.body)["name"];
+      _item.add(v);
+      notifyListeners();
+      
+    });
+    
   }
 
-  void updateProduct(String productId, Product v) {
+  Future<void> updateProduct(String productId, Product v) {
     final prodIndex = _item.indexWhere((e) => e.id == productId);
     if (prodIndex >= 0) {
       _item[prodIndex] = v;
@@ -66,14 +89,13 @@ class Products with ChangeNotifier {
       addItem(v);
     }
     notifyListeners();
+    return Future.value();
   }
 
   void removeItem(String productId) {
     _item.removeWhere((p) => p.id == productId);
     notifyListeners();
   }
-
- 
 
   Product findById(id) {
     return _item.firstWhere((element) => element.id == id);
