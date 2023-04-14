@@ -57,28 +57,30 @@ class Products with ChangeNotifier {
     return _item.where((p) => p.isFavorite).toList();
   }
 
-  Future<void> addItem(Product v) {
+  Future<void> addItem(Product v) async {
     final url = Uri.https(
         "flutter-first-1d441-default-rtdb.firebaseio.com", "products.json");
+    try {
+      final response = await http.post(url,
+          body: json.encode({
+            'id': v.id,
+            'title': v.title,
+            'description': v.description,
+            'price': v.price,
+            'imageUrl': v.imageUrl,
+            'favorites': v.isFavorite
+          }));
 
-    return http
-        .post(url,
-            body: json.encode({
-              'id': v.id,
-              'title': v.title,
-              'description': v.description,
-              'price': v.price,
-              'imageUrl': v.imageUrl,
-              'favorites': v.isFavorite
-            }))
-        .then((value) {
-      //Change the value of the id
-      v.id = json.decode(value.body)["name"];
+      v.id = json.decode(response.body)["name"];
       _item.add(v);
       notifyListeners();
-      
-    });
-    
+    } catch (e) {
+      print("Error: ${e}");
+      rethrow;
+    }
+
+  
+   
   }
 
   Future<void> updateProduct(String productId, Product v) {
