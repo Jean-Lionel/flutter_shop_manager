@@ -63,22 +63,27 @@ class Products with ChangeNotifier {
         "flutter-first-1d441-default-rtdb.firebaseio.com", "products.json");
     try {
       final response = await http.get(url);
+      
+      if (response.body != null) {
+        final result = json.decode(response.body) as Map<String, dynamic>;
+        final List<Product> resultList = [];
+        result.forEach((productId, productData) {
+          resultList.add(Product(
+            id: productId,
+            title: productData['title'],
+            description: productData['description'],
+            price: productData['price'],
+            imageUrl: productData['imageUrl'],
+            isFavorite: productData['favorites'],
+          ));
+        });
 
-      final result = json.decode(response.body) as Map<String, dynamic>;
-      final List<Product> resultList = [];
-      result.forEach((productId, productData) {
-        resultList.add(Product(
-          id: productId,
-          title: productData['title'],
-          description: productData['description'],
-          price: productData['price'],
-          imageUrl: productData['imageUrl'],
-          isFavorite: productData['favorites'],
-        ));
-      });
+        _item = resultList;
+      }
 
-      _item = resultList;
+     
     } catch (e) {
+    
       rethrow;
     }
   }
@@ -156,7 +161,6 @@ class Products with ChangeNotifier {
       throw HttpException("Error for delete: ${response.statusCode}");
     }
     existingProduct = null;
-    
   }
 
   Product findById(id) {

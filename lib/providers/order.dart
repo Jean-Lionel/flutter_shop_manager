@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_shop_manager/models/htt_url.dart';
+import '../models/http_url.dart';
 import 'package:http/http.dart' as http;
 import './cart.dart';
 
@@ -28,31 +28,70 @@ class OrderItem {
 
 class Order with ChangeNotifier {
   List<OrderItem> _items = [];
-
   List<OrderItem> get items {
     return [..._items];
   }
 
-  Future<void> addOrder(List<CartItem> items, double totalAmount) async {
-    final url = Uri.https(HttpUrl.URL, "orders.json");
+  Future<void> initOrders() async {
+    try {
+      final url = Uri.https(HttpUrl.URL, "orders.json");
 
-    final jsonItems = items.map((e) => e.toJson());
+      final response = await http.get(url);
+      final result = json.decode(response.body) as Map<String, dynamic>;
+      List<OrderItem> resultList = [];
+      result.forEach((key, value) {
+        if (value["product"] != null) {
+          List<dynamic> x = List.from(value["product"]);
+
+          List<CartItem> productList = [];
+
+          x.forEach((e) {
+            productList.add(CartItem(
+              id: e["id"],
+              title: e["title"],
+              price: e["price"],
+              quantity: e["quantity"],
+            ));
+          });
+
+          resultList.add(OrderItem(
+            key,
+            value["amount"],
+            productList,
+            DateTime.parse(value["dateTime"]),
+          ));
+        }
+      });
+      _items = resultList;
+      notifyListeners();
+    } catch (e) {
+      print("Error ${e}");
+    }
+  }
+
+  Future<void> addOrder(List<CartItem> items, double totalAmount) async {
     //print(jsonItems);
-    final response = await http.post(url,
-        body: json.encode({
-          "amount": totalAmount,
-          "product": [...jsonItems],
-          "dateTime": DateTime.now().toString()
-        }));
-    _items.insert(
-        0,
-        OrderItem(
-          DateTime.now().toString(),
-          totalAmount,
-          items,
-          DateTime.now(),
-        ));
-    notifyListeners();
+    try {
+      final url = Uri.https(HttpUrl.URL, "orders.json");
+      final jsonItems = items.map((e) => e.toJson());
+      final response = await http.post(url,
+          body: json.encode({
+            "amount": totalAmount,
+            "product": [...jsonItems],
+            "dateTime": DateTime.now().toString()
+          }));
+      _items.insert(
+          0,
+          OrderItem(
+            json.decode(response.body)["name"],
+            totalAmount,
+            items,
+            DateTime.now(),
+          ));
+      notifyListeners();
+    } catch (e) {
+      throw (e);
+    }
   }
 
   void clear() {
