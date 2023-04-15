@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -140,9 +141,22 @@ class Products with ChangeNotifier {
     return Future.value();
   }
 
-  void removeItem(String productId) {
-    _item.removeWhere((p) => p.id == productId);
+  Future<void> removeItem(String productId) async {
+    final url = Uri.https("flutter-first-1d441-default-rtdb.firebaseio.com",
+        "products/$productId");
+    final productIndex = _item.indexWhere((p) => p.id == productId);
+    dynamic existingProduct = _item[productIndex];
+    _item.removeAt(productIndex);
+    final response = await http.delete(url);
+    
     notifyListeners();
+    if (response.statusCode >= 400) {
+      _item.insert(productIndex, existingProduct);
+      notifyListeners();
+      throw HttpException("Error for delete: ${response.statusCode}");
+    }
+    existingProduct = null;
+    
   }
 
   Product findById(id) {

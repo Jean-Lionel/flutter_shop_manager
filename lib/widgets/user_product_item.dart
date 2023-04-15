@@ -10,6 +10,7 @@ class UserProductItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _scafolder = ScaffoldMessenger.of(context);
     return ListTile(
       title: Text(product.title),
       leading: CircleAvatar(
@@ -47,10 +48,17 @@ class UserProductItem extends StatelessWidget {
                           child: Text('Non'),
                         ),
                         ElevatedButton(
-                          onPressed: () {
-                            Provider.of<Products>(cxt, listen: false)
-                                .removeItem(product.id);
-                            Navigator.of(cxt).pop();
+                          onPressed: () async {
+                            try {
+                              await Provider.of<Products>(cxt, listen: false)
+                                  .removeItem(product.id);
+                            } catch (e) {
+                              _scafolder.showSnackBar(SnackBar(
+                                content: Text("Error: ${e}"),
+                              ));
+                            } finally {
+                              Navigator.of(cxt).pop();
+                            }
                           },
                           child: Text('Ok'),
                           style: ButtonStyle(alignment: Alignment.center),
