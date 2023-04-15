@@ -25,6 +25,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
   String _imageUrl = "";
   double _price = 0.0;
   final _formKey = GlobalKey<FormState>();
+  var _isCreate = false;
 
   var product;
 
@@ -40,6 +41,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
     _formKey.currentState!.save();
     if (_product_id.isEmpty) {
       _product_id = DateTime.now().toString();
+      _isCreate = true;
     }
     product = Product(
       id: _product_id,
@@ -51,7 +53,14 @@ class _AddProductScreenState extends State<AddProductScreen> {
     );
 
     try {
-      await Provider.of<Products>(context, listen: false).addItem(product);
+
+      if (_isCreate) {
+await Provider.of<Products>(context, listen: false).addItem(product);
+      } else {
+        await Provider.of<Products>(context, listen: false)
+            .updateProduct(_product_id, product);
+      }
+      
       Navigator.of(context).pop();
     } catch (e) {
       showDialog(

@@ -86,15 +86,19 @@ class Products with ChangeNotifier {
     final url = Uri.https(
         "flutter-first-1d441-default-rtdb.firebaseio.com", "products.json");
     try {
-      final response = await http.post(url,
-          body: json.encode({
+      final response = await http.post(
+        url,
+        body: json.encode(
+          {
             'id': v.id,
             'title': v.title,
             'description': v.description,
             'price': v.price,
             'imageUrl': v.imageUrl,
             'favorites': v.isFavorite
-          }));
+          },
+        ),
+      );
 
       v.id = json.decode(response.body)["name"];
       _item.add(v);
@@ -105,9 +109,29 @@ class Products with ChangeNotifier {
     }
   }
 
-  Future<void> updateProduct(String productId, Product v) {
+  Future<void> updateProduct(String productId, Product v) async {
     final prodIndex = _item.indexWhere((e) => e.id == productId);
     if (prodIndex >= 0) {
+      final url = Uri.https("flutter-first-1d441-default-rtdb.firebaseio.com",
+          "products/$productId.json");
+
+      try {
+        await http.patch(
+          url,
+          body: json.encode(
+            {
+              'title': v.title,
+              'description': v.description,
+              'price': v.price,
+              'imageUrl': v.imageUrl,
+              'favorites': v.isFavorite
+            },
+          ),
+        );
+      } catch (e) {
+        rethrow;
+      }
+
       _item[prodIndex] = v;
     } else {
       addItem(v);
