@@ -21,12 +21,21 @@ class ProductVeiwScreen extends StatefulWidget {
 class _ProductVeiwScreenState extends State<ProductVeiwScreen> {
   bool _showFav = false;
   var _isInit = true;
+  var _isLoading = true;
 
   @override
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
+
     if (_isInit) {
-      Provider.of<Products>(context).getAddSyncData();
+      setState(() {
+        _isLoading = true;
+      });
+      Provider.of<Products>(context).getAddSyncData().then((value) {
+        setState(() {
+          _isLoading = false;
+        });
+      });
     }
     _isInit = false;
     super.didChangeDependencies();
@@ -82,7 +91,11 @@ class _ProductVeiwScreenState extends State<ProductVeiwScreen> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: GridViewWigdet(_showFav),
+        child: _isLoading
+            ? const Center(
+                child: CircularProgressIndicator(),
+              )
+            : GridViewWigdet(_showFav),
       ),
     );
   }
