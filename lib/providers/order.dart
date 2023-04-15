@@ -36,11 +36,13 @@ class Order with ChangeNotifier {
   Future<void> addOrder(List<CartItem> items, double totalAmount) async {
     final url = Uri.https(HttpUrl.URL, "orders.json");
 
+    final jsonItems = items.map((e) => e.toJson());
+    //print(jsonItems);
     final response = await http.post(url,
         body: json.encode({
           "amount": totalAmount,
-          "product": "",
-          "dateTime": DateTime.now()
+          "product": [...jsonItems],
+          "dateTime": DateTime.now().toString()
         }));
     _items.insert(
         0,
