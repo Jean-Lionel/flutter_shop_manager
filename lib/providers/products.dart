@@ -143,12 +143,12 @@ class Products with ChangeNotifier {
 
   Future<void> removeItem(String productId) async {
     final url = Uri.https("flutter-first-1d441-default-rtdb.firebaseio.com",
-        "products/$productId");
+        "products/$productId.json");
     final productIndex = _item.indexWhere((p) => p.id == productId);
     dynamic existingProduct = _item[productIndex];
     _item.removeAt(productIndex);
     final response = await http.delete(url);
-    
+
     notifyListeners();
     if (response.statusCode >= 400) {
       _item.insert(productIndex, existingProduct);
