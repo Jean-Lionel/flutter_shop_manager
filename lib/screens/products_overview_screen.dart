@@ -25,7 +25,6 @@ class _ProductVeiwScreenState extends State<ProductVeiwScreen> {
 
   @override
   void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
 
     if (_isInit) {
       setState(() {
@@ -43,8 +42,6 @@ class _ProductVeiwScreenState extends State<ProductVeiwScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
-
     super.initState();
   }
 

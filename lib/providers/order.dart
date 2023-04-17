@@ -35,7 +35,6 @@ class Order with ChangeNotifier {
   Future<void> initOrders() async {
     try {
       final url = Uri.https(HttpUrl.URL, "orders.json");
-
       final response = await http.get(url);
       final result = json.decode(response.body) as Map<String, dynamic>;
       List<OrderItem> resultList = [];
