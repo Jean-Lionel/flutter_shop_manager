@@ -73,11 +73,12 @@ class Order with ChangeNotifier {
     try {
       final url = Uri.https(HttpUrl.URL, "orders.json");
       final jsonItems = items.map((e) => e.toJson());
+      DateTime time = DateTime.now();
       final response = await http.post(url,
           body: json.encode({
             "amount": totalAmount,
             "product": [...jsonItems],
-            "dateTime": DateTime.now().toString()
+            "dateTime": time.toIso8601String()
           }));
       _items.insert(
           0,
@@ -85,7 +86,7 @@ class Order with ChangeNotifier {
             json.decode(response.body)["name"],
             totalAmount,
             items,
-            DateTime.now(),
+            time,
           ));
       notifyListeners();
     } catch (e) {
