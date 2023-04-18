@@ -87,7 +87,6 @@ class Products with ChangeNotifier {
      
     } catch (e) {
     
-      rethrow;
     }
   }
 

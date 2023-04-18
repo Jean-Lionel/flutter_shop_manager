@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_shop_manager/screens/add_product_screen.dart';
+import './screens/add_product_screen.dart';
+import './screens/auth_screen.dart';
 import './screens/user_product_screen.dart';
 import './screens/order_screen.dart';
 import '../providers/order.dart';
@@ -40,7 +41,7 @@ class MyApp extends StatelessWidget {
           fontFamily: "Lato",
         ),
         home: Scaffold(
-          body: ProductVeiwScreen(),
+          body: AuthScreen(),
         ),
         routes: {
           ProductDetailScreen.routeName: (_) => ProductDetailScreen(),
@@ -48,6 +49,7 @@ class MyApp extends StatelessWidget {
           OrderScreen.routeName: (_) => OrderScreen(),
           UserProductScreen.routeName: (_) => UserProductScreen(),
           AddProductScreen.routeName: (_) => AddProductScreen(),
+          AuthScreen.routeName: (_) => AuthScreen(),
         },
         debugShowCheckedModeBanner: false,
       ),
