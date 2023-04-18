@@ -37,13 +37,14 @@ class Order with ChangeNotifier {
       final url = Uri.https(HttpUrl.URL, "orders.json");
       final response = await http.get(url);
       final result = json.decode(response.body) as Map<String, dynamic>;
+      if (result == null) {
+        return;
+      }
       List<OrderItem> resultList = [];
       result.forEach((key, value) {
         if (value["product"] != null) {
           List<dynamic> x = List.from(value["product"]);
-
           List<CartItem> productList = [];
-
           x.forEach((e) {
             productList.add(CartItem(
               id: e["id"],
@@ -61,7 +62,7 @@ class Order with ChangeNotifier {
           ));
         }
       });
-      _items = resultList;
+      _items = resultList.reversed.toList();
       notifyListeners();
     } catch (e) {
       print("Error ${e}");

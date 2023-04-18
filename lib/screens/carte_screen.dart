@@ -77,7 +77,7 @@ class _OrdNowButtonState extends State<OrdNowButton> {
   @override
   Widget build(BuildContext context) {
     return TextButton(
-      onPressed: (widget.cart.totalPrice > 0 || _isLoading)
+      onPressed: (widget.cart.totalPrice <= 0 || _isLoading)
           ? null
           : () async {
               setState(() {

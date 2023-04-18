@@ -66,6 +66,9 @@ class Products with ChangeNotifier {
       
       if (response.body != null) {
         final result = json.decode(response.body) as Map<String, dynamic>;
+        if (result == null) {
+          return;
+        }
         final List<Product> resultList = [];
         result.forEach((productId, productData) {
           resultList.add(Product(

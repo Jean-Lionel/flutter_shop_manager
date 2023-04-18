@@ -16,10 +16,17 @@ class OrderScreen extends StatefulWidget {
 
 class _OrderScreenState extends State<OrderScreen> {
   var _isInit = true;
+  var is_loading = false;
   @override
-  void didChangeDependencies() {
+  Future<void> didChangeDependencies() async {
     if (_isInit) {
-      Provider.of<Order>(context, listen: false).initOrders();
+      setState(() {
+        is_loading = true;
+      });
+      await Provider.of<Order>(context, listen: false).initOrders();
+      setState(() {
+        is_loading = false;
+      });
     }
     _isInit = false;
     super.didChangeDependencies();
@@ -33,7 +40,11 @@ class _OrderScreenState extends State<OrderScreen> {
         title: Text("Your orders"),
         backgroundColor: Theme.of(context).primaryColor,
       ),
-      body: ListView.builder(
+      body: is_loading
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : ListView.builder(
         itemBuilder: (ctxt, index) => Card(
           child: OrderItemWidget(order.items[index]),
         ),
