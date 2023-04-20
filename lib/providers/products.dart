@@ -1,7 +1,7 @@
 import 'dart:convert';
-import 'dart:io';
-
 import 'package:flutter/material.dart';
+import '../models/http_exception.dart';
+import '../models/http_url.dart';
 import 'package:http/http.dart' as http;
 
 import './product.dart';
@@ -50,6 +50,9 @@ class Products with ChangeNotifier {
     // ),
   ];
 
+  String token;
+
+  Products(this.token, this._item);
   List<Product> get item {
     return [..._item];
   }
@@ -60,10 +63,13 @@ class Products with ChangeNotifier {
 
   Future<void> getAddSyncData() async {
     final url = Uri.https(
-        "flutter-first-1d441-default-rtdb.firebaseio.com", "products.json");
+        "flutter-first-1d441-default-rtdb.firebaseio.com", "products.json", {
+      'auth': token,
+    });
+    //print(url);
     try {
       final response = await http.get(url);
-      
+
       if (response.body != null) {
         final result = json.decode(response.body) as Map<String, dynamic>;
         if (result == null) {
@@ -83,11 +89,7 @@ class Products with ChangeNotifier {
 
         _item = resultList;
       }
-
-     
-    } catch (e) {
-    
-    }
+    } catch (e) {}
   }
 
   Future<void> addItem(Product v) async {

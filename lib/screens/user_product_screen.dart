@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_shop_manager/providers/auth.dart';
 import 'package:flutter_shop_manager/screens/add_product_screen.dart';
 import '../widgets/app_drawer.dart';
 import '../widgets/user_product_item.dart';
@@ -10,6 +11,8 @@ class UserProductScreen extends StatelessWidget {
   const UserProductScreen({super.key});
 
   Future<void> _refreshProduct(BuildContext context) async {
+    final authData = Provider.of<Auth>(context);
+
     await Provider.of<Products>(context, listen: false).getAddSyncData();
   }
 

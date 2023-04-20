@@ -26,8 +26,10 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider.value(
           value: Auth(),
         ),
-        ChangeNotifierProvider(
-          create: (_) => Products(),
+        ChangeNotifierProxyProvider<Auth, Products>(
+          create: (_) => Products("", []),
+          update: (_, auth, previewsProducs) =>
+              Products(auth.token as String, previewsProducs!.item),
         ),
         ChangeNotifierProvider(
           create: (_) => Cart(),
@@ -35,9 +37,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (_) => Order(),
         ),
-        
       ],
-      child: MaterialApp(
+      child: Consumer<Auth>(
+        builder: (context, auth, _) => MaterialApp(
         title: "My SHop",
         theme: ThemeData(
           primaryColor: Colors.purple,
@@ -45,7 +47,7 @@ class MyApp extends StatelessWidget {
           fontFamily: "Lato",
         ),
         home: Scaffold(
-          body: AuthScreen(),
+            body: auth.isAuth ? ProductVeiwScreen() : AuthScreen(),
         ),
         routes: {
           ProductDetailScreen.routeName: (_) => ProductDetailScreen(),
@@ -56,6 +58,7 @@ class MyApp extends StatelessWidget {
           AuthScreen.routeName: (_) => AuthScreen(),
         },
         debugShowCheckedModeBanner: false,
+      ),
       ),
     );
   }

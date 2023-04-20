@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_shop_manager/providers/products.dart';
-import 'package:flutter_shop_manager/screens/carte_screen.dart';
+import '../providers/auth.dart';
+import '../providers/products.dart';
+import '../screens/carte_screen.dart';
 import 'package:flutter_shop_manager/widgets/app_drawer.dart';
 import '../providers/cart.dart';
 import 'package:provider/provider.dart';
@@ -25,11 +26,12 @@ class _ProductVeiwScreenState extends State<ProductVeiwScreen> {
 
   @override
   void didChangeDependencies() {
-
     if (_isInit) {
       setState(() {
         _isLoading = true;
       });
+      // final authData = Provider.of<Auth>(context);
+
       Provider.of<Products>(context).getAddSyncData().then((value) {
         setState(() {
           _isLoading = false;
