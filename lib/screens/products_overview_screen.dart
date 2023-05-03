@@ -31,7 +31,6 @@ class _ProductVeiwScreenState extends State<ProductVeiwScreen> {
         _isLoading = true;
       });
       // final authData = Provider.of<Auth>(context);
-
       Provider.of<Products>(context).getAddSyncData().then((value) {
         setState(() {
           _isLoading = false;

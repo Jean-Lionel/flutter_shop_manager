@@ -64,17 +64,21 @@ class Products with ChangeNotifier {
   Future<void> getAddSyncData() async {
     final url = Uri.https(
         "flutter-first-1d441-default-rtdb.firebaseio.com", "products.json", {
-      'auth': token,
+      "auth": token,
     });
-    //print(url);
     try {
       final response = await http.get(url);
+      print(json.decode(response.body));
 
       if (response.body != null) {
         final result = json.decode(response.body) as Map<String, dynamic>;
         if (result == null) {
           return;
         }
+        if (result['error'] != null) {
+          throw HttpException(result['error']);
+        }
+
         final List<Product> resultList = [];
         result.forEach((productId, productData) {
           resultList.add(Product(
@@ -89,7 +93,9 @@ class Products with ChangeNotifier {
 
         _item = resultList;
       }
-    } catch (e) {}
+    } catch (e) {
+      print(e);
+    }
   }
 
   Future<void> addItem(Product v) async {
